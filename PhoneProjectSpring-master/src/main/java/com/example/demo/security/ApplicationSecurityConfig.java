@@ -90,6 +90,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.map((appuser) -> User.builder().username(appuser.getUsername())
 						.password(passwordEncoder.encode(appuser.getPassword())).roles(appuser.getRoles()).build())
 				.collect(Collectors.toList());
+		appUserService.save(collect);
 		return new InMemoryUserDetailsManager(collect);
 	}
 }

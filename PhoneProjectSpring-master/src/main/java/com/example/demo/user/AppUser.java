@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 
+import net.bytebuddy.asm.Advice.This;
+
 @Entity
 public class AppUser {
 	@Id
@@ -38,11 +40,22 @@ public class AppUser {
 	public String getPassword() {
 		return password;
 	}
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	public AppUser(String username, String password) {
 		super();
 		this.username = username;
 		this.password = password;
+	}
+
+	public AppUser(String username, String password, Collection<String> roles) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.roles.addAll(roles);
 	}
 
 	public void addRole(String role) {

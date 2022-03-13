@@ -1,6 +1,10 @@
 package com.example.demo.user;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Service;
 import com.example.demo.security.ApplicationUserRol;
 
@@ -16,30 +20,32 @@ public class AppUserService {
 	private UserRepository userRepository;
 
 	public List<AppUser> getUsers() {
-		return users;
+		return this.users;
+	}
+
+	public void save(List<UserDetails> usersDetails) {
+		for (int i = 0; i < usersDetails.size(); i++) {
+			this.users.get(i).setPassword(usersDetails.get(i).getPassword());
+		}
+		this.userRepository.saveAll(this.users);
 	}
 
 	public AppUserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 		createUsers();
-		save();
-	}
-
-	private void save() {
-		this.userRepository.saveAll(this.users);
 	}
 
 	private void createUsers() {
-		users = new ArrayList<>();
-		users.add(new AppUser("marcos", "123"));
+		this.users = new ArrayList<>();
+		this.users.add(new AppUser("marcos", "123"));
 		addRoleAdminToUser("marcos");
 	}
 
-	public void addRoleAdminToUser(String username) {
+	private void addRoleAdminToUser(String username) {
 		findUserByUsername(username).ifPresent((a) -> a.addRole(ApplicationUserRol.ADMIN.name()));
 	}
 
 	private Optional<AppUser> findUserByUsername(String username) {
-		return users.stream().filter((a) -> a.getUsername().equals(username)).findFirst();
+		return this.users.stream().filter((a) -> a.getUsername().equals(username)).findFirst();
 	}
 }

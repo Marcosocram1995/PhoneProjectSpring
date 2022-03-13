@@ -27,14 +27,6 @@ public enum ApplicationUserRol {
 		return permissions;
 	}
 
-	public static List<String> getRolNames() {
-		List<String> rolList = new ArrayList<>();
-		for (ApplicationUserRol rol : values()) {
-			rolList.add(rol.name());
-		}
-		return rolList;
-	}
-
 	public Set<SimpleGrantedAuthority> getGrantedAuthorities() {
 		Set<SimpleGrantedAuthority> permissionsAuth = getPermissions().stream()
 				// el map crea una nueva lista donde sustituye cada permiso por una authority de

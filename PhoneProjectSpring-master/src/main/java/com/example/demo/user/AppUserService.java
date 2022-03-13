@@ -1,10 +1,7 @@
 package com.example.demo.user;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Service;
 import com.example.demo.security.ApplicationUserRol;
 
@@ -32,13 +29,12 @@ public class AppUserService {
 
 	public AppUserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
-		createUsers();
+		this.users = new ArrayList<>();
 	}
 
-	private void createUsers() {
-		this.users = new ArrayList<>();
-		this.users.add(new AppUser("marcos", "123"));
-		addRoleAdminToUser("marcos");
+	public void createUsers(String name, String password) {
+		this.users.add(new AppUser(name, password));
+		addRoleAdminToUser(name);
 	}
 
 	private void addRoleAdminToUser(String username) {

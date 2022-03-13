@@ -23,7 +23,6 @@ public class AppUser {
 	private String username;
 	@Column(name = "password")
 	private String password;
-
 	@ElementCollection
 	@CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
 	@Column(name = "roles")
@@ -37,25 +36,26 @@ public class AppUser {
 		return username;
 	}
 
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public void setRoles(Collection<String> roles) {
+		this.roles = roles;
 	}
 
 	public AppUser(String username, String password) {
 		super();
 		this.username = username;
 		this.password = password;
-	}
-
-	public AppUser(String username, String password, Collection<String> roles) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.roles.addAll(roles);
 	}
 
 	public void addRole(String role) {

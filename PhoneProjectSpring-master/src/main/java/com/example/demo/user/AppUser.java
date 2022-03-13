@@ -1,33 +1,34 @@
 package com.example.demo.user;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
-import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-
-import com.example.demo.rol.Rol;
+import javax.persistence.JoinColumn;
 
 @Entity
 public class AppUser {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long user_id;
 	@Column(name = "username")
 	private String username;
 	@Column(name = "password")
 	private String password;
+
+	@ElementCollection
+	@CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
 	@Column(name = "roles")
-	@ManyToMany(cascade = CascadeType.ALL)
-	private List<Rol> roles = new ArrayList<>();
+	private Collection<String> roles = new ArrayList<>();
 
 	public Long getId() {
-		return id;
+		return user_id;
 	}
 
 	public String getUsername() {
@@ -44,7 +45,7 @@ public class AppUser {
 		this.password = password;
 	}
 
-	public void addRole(Rol role) {
+	public void addRole(String role) {
 		this.roles.add(role);
 	}
 
